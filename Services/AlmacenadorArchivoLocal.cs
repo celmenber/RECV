@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApp_AT.Services;
 
-namespace WebApp_AT.Servicios
+namespace WebApp_AT.Services
 {
     public class AlmacenadorArchivoLocal : IAlmacenadorArchivo
     {

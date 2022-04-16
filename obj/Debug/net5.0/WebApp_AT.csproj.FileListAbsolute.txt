@@ -41,7 +41,6 @@ D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.IdentityModel.Logg
 D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
 D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
-D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Newtonsoft.Json.dll
 D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
 D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
 D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
@@ -60,3 +59,10 @@ D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\runtimes\win-x86\native\Micr
 D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\VBNET\Proyecto_Alertastempranas\obj\Debug\net5.0\WebApp_AT.csprojAssemblyReference.cache
+D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
+D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll

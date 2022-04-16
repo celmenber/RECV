@@ -76,6 +76,8 @@ namespace WebApp_AT.Controllers
         {
             var entidad = mapper.Map<TblArchivosCaso>(archivoscreacionDTO);
 
+            var CANTARCH = archivoscreacionDTO.RutaArchivo.Length;
+
             if (archivoscreacionDTO.RutaArchivo != null)
             {
                 using (var memoryStream = new MemoryStream())

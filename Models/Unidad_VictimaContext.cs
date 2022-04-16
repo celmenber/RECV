@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace WebApp_AT.Models
 {
-    public partial class Unidad_VictimaContext : DbContext
+    public partial class Unidad_VictimaContext : IdentityDbContext<AplicationUser>
     {
         public Unidad_VictimaContext()
         {
