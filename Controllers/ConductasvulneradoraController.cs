@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,15 +14,16 @@ namespace WebApp_AT.Controllers
 {
     [ApiController]
     [Route("api/conductas")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Produces("application/json")]
     [Consumes("application/json")]
-    public class ConductasvulneradoraController
+    public class ConductasvulneradoraController : ControllerBase
     {
-        private readonly Unidad_VictimaContext context;
+        private readonly RECVContext context;
 
         private readonly IMapper mapper;
 
-        public ConductasvulneradoraController(Unidad_VictimaContext context, IMapper mapper)
+        public ConductasvulneradoraController(RECVContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -94,14 +97,5 @@ namespace WebApp_AT.Controllers
             return NoContent();
         }
 
-        private ActionResult<ConductasvulneradoraDTO> NoContent()
-        {
-            throw new NotImplementedException();
-        }
-
-        private ActionResult<ConductasvulneradoraDTO> NotFound()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

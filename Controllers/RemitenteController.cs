@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,15 +14,16 @@ namespace WebApp_AT.Controllers
 {
     [ApiController]
     [Route("api/remitente")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Produces("application/json")]
     [Consumes("application/json")]
-    public class RemitenteController
+    public class RemitenteController : ControllerBase
     {
-        private readonly Unidad_VictimaContext context;
+        private readonly RECVContext context;
 
         private readonly IMapper mapper;
 
-        public RemitenteController(Unidad_VictimaContext context, IMapper mapper)
+        public RemitenteController(RECVContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -73,11 +76,6 @@ namespace WebApp_AT.Controllers
 
             var remitente_DTO = mapper.Map<RemitenteDTO>(entidad);
 
-            //var TblR = new TblRemitente
-            //{
-            //    Id = remitente_DTO.Id,
-            //};
-
             return new CreatedAtRouteResult("ObtenerRemitente", new { id = remitente_DTO.Id }, remitente_DTO);
         }
 
@@ -111,14 +109,5 @@ namespace WebApp_AT.Controllers
             return NoContent();
         }
 
-        private ActionResult<RemitenteDTO> NoContent()
-        {
-            throw new NotImplementedException();
-        }
-
-        private ActionResult<RemitenteDTO> NotFound()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

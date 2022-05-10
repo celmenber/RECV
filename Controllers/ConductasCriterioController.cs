@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,15 +14,16 @@ namespace WebApp_AT.Controllers
 {
     [ApiController]
     [Route("api/conductascriterio")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Produces("application/json")]
     [Consumes("application/json")]
-    public class ConductasCriterioController
+    public class ConductasCriterioController : ControllerBase
     {
-        private readonly Unidad_VictimaContext context;
+        private readonly RECVContext context;
 
         private readonly IMapper mapper;
 
-        public ConductasCriterioController(Unidad_VictimaContext context, IMapper mapper)
+        public ConductasCriterioController(RECVContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -63,16 +66,6 @@ namespace WebApp_AT.Controllers
 
 
             return new CreatedAtRouteResult("Obtener_CC", new { id = cc_DTO.Id }, cc_DTO);
-        }
-
-        //private ActionResult Ok()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        private ActionResult<ConductasCriterioDTO> NotFound()
-        {
-            throw new NotImplementedException();
         }
     }
 }

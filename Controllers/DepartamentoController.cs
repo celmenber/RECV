@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +16,14 @@ namespace WebApp_AT.Controllers
 {
     [ApiController]
     [Route("api/departamento")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class DepartamentoController : ControllerBase
     {
-        private readonly Unidad_VictimaContext context;
+        private readonly RECVContext context;
 
         private readonly IMapper mapper;
 
-        public DepartamentoController(Unidad_VictimaContext context, IMapper mapper)
+        public DepartamentoController(RECVContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;

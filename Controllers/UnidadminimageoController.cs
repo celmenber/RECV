@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,13 +14,14 @@ namespace WebApp_AT.Controllers
 {
     [ApiController]
     [Route("api/unidadminimageo")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UnidadminimageoController : ControllerBase
     {
-        private readonly Unidad_VictimaContext context;
+        private readonly RECVContext context;
 
         private readonly IMapper mapper;
 
-        public UnidadminimageoController(Unidad_VictimaContext context, IMapper mapper)
+        public UnidadminimageoController(RECVContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -11,13 +13,14 @@ namespace WebApp_AT.Controllers
 {
     [ApiController]
     [Route("api/municipio")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MunicipioController : ControllerBase
     {
-        private readonly Unidad_VictimaContext context;
+        private readonly RECVContext context;
 
         private readonly IMapper mapper;
 
-        public MunicipioController(Unidad_VictimaContext context, IMapper mapper)
+        public MunicipioController(RECVContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;

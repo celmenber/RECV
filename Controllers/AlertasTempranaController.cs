@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,15 +14,16 @@ namespace WebApp_AT.Controllers
 {
     [ApiController]
     [Route("api/alertatemprana")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Produces("application/json")]
     [Consumes("application/json")]
     public class AlertasTempranaController:ControllerBase
     {
-        private readonly Unidad_VictimaContext context;
+        private readonly RECVContext context;
 
         private readonly IMapper mapper;
 
-        public AlertasTempranaController(Unidad_VictimaContext context, IMapper mapper)
+        public AlertasTempranaController(RECVContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,15 +10,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApp_AT.DTOs;
 using WebApp_AT.Models;
-using WebApp_AT.Servicios;
+using WebApp_AT.Services;
 
 namespace WebApp_AT.Controllers
 {
     [ApiController]
     [Route("api/archivos")]
-    public class ArchivoscasoController
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public class ArchivoscasoController : ControllerBase
     {
-        private readonly Unidad_VictimaContext context;
+        private readonly RECVContext context;
 
         private readonly IMapper mapper;
 
@@ -24,7 +27,7 @@ namespace WebApp_AT.Controllers
 
         private readonly string contenedor = "documentosRadicado";
 
-        public ArchivoscasoController(Unidad_VictimaContext context,
+        public ArchivoscasoController(RECVContext context,
                                       IMapper mapper, 
                                       IAlmacenadorArchivo almacenadorArchivo)
         {
@@ -63,10 +66,10 @@ namespace WebApp_AT.Controllers
             var entidade = await context.TblArchivosCasos.Where(X => X.IdCasos == idCaso)
                                                      .OrderBy(X => X.IdCasos)
                                                      .ToListAsync();
-            //if (entidade == null)
-            //{
-            //    return NotFound();
-            //}
+            if (entidade == null)
+            {
+                return NotFound();
+            }
 
             return mapper.Map<List<ArchivoscasoDTO>>(entidade);
         }
@@ -132,14 +135,5 @@ namespace WebApp_AT.Controllers
             return NoContent();
         }
 
-        private ActionResult<ArchivoscasoDTO> NoContent()
-        {
-            throw new NotImplementedException();
-        }
-
-        private ActionResult<ArchivoscasoDTO> NotFound()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

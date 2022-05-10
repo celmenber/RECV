@@ -25,6 +25,11 @@ namespace WebApp_AT.Helpers
             CreateMap<TblMacroregion, MacroregionDTO>().ReverseMap();
             CreateMap<TblArchivosCaso, ArchivoscasoDTO>().ReverseMap();
 
+
+            CreateMap<TblUsuario, UsuarioListDTO>().ReverseMap();
+            CreateMap<UsuarioRegisterDTO, TblUsuario>().ReverseMap();
+            CreateMap<UsuarioLoginDTO, TblUsuario>().ReverseMap();
+
             CreateMap<ArchivoscreacionDTO, TblArchivosCaso>()
                 .ForMember(x => x.RutaArchivo, options => options.Ignore()).ReverseMap();
             CreateMap<ArchivoscreacionDTO, TblArchivosCaso>();

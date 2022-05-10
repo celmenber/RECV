@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,15 +14,16 @@ namespace WebApp_AT.Controllers
 {
     [ApiController]
     [Route("api/criterio")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Produces("application/json")]
     [Consumes("application/json")]
-    public class CriterioController
+    public class CriterioController : ControllerBase
     {
-        private readonly Unidad_VictimaContext context;
+        private readonly RECVContext context;
 
         private readonly IMapper mapper;
 
-        public CriterioController(Unidad_VictimaContext context, IMapper mapper)
+        public CriterioController(RECVContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -105,16 +108,6 @@ namespace WebApp_AT.Controllers
             await context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private ActionResult<CriterioDTO> NoContent()
-        {
-            throw new NotImplementedException();
-        }
-
-        private ActionResult<CriterioDTO> NotFound()
-        {
-            throw new NotImplementedException();
         }
     }
 }

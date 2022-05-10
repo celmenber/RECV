@@ -17,8 +17,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebApp_AT.Data;
+using WebApp_AT.Data.Interfaces;
+using WebApp_AT.Helpers;
 using WebApp_AT.Models;
-using WebApp_AT.Servicios;
+using WebApp_AT.Services;
+using WebApp_AT.Services.Interfaces;
 
 namespace WebApplication1
 {
@@ -35,24 +39,32 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
             services.AddCors();
 
-            services.AddAutoMapper(typeof(Startup));
+            // se agrega configuracion de AutoMapper
+            services.AddAutoMapper(typeof(AutoMapperAT).Assembly);
+            // services.AddAutoMapper(typeof(Startup));
+            
             services.AddControllers();
 
+            // se agrega el repositorio de authenticacion 
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            // se agrega  token service
+            services.AddScoped<ITokenService, TokenService>();
+
             services.AddTransient<IAlmacenadorArchivo, AlmacenadorArchivoLocal>();
+
             services.AddHttpContextAccessor();
 
-
-            services.AddDbContext<Unidad_VictimaContext>(options =>
+            //Unidad_VictimaContext
+            services.AddDbContext<RECVContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<AplicationUser, IdentityRole>()
-               .AddEntityFrameworkStores<Unidad_VictimaContext>()
-               .AddDefaultTokenProviders();
+
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-               .AddJwtBearer(options =>
+                    .AddJwtBearer(options =>
                  options.TokenValidationParameters = new TokenValidationParameters
                  {
                      ValidateIssuer = false,
@@ -60,13 +72,41 @@ namespace WebApplication1
                      ValidateLifetime = true,
                      ValidateIssuerSigningKey = true,
                      IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(Configuration["jwt:key"])),
+                    Encoding.UTF8.GetBytes(Configuration["Token"])),
                      ClockSkew = TimeSpan.Zero
                  });
 
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiAlertasTempranas", Version = "v1" });
+            //});
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiAlertasTempranas", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "ApiRECV",
+                    Version = "v1"
+                });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                   {
+                     new OpenApiSecurityScheme
+                     {
+                       Reference = new OpenApiReference
+                       {
+                         Type = ReferenceType.SecurityScheme,
+                         Id = "Bearer"
+                       }
+                      },
+                      new string[] { }
+                    }
+                  });
             });
         }
 
@@ -88,7 +128,7 @@ namespace WebApplication1
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiAlertasTempranas v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiRECV v1"));
             }
 
             app.UseHttpsRedirection();
@@ -100,6 +140,8 @@ namespace WebApplication1
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+           // app.UseMvc();
 
             app.UseEndpoints(endpoints =>
             {
