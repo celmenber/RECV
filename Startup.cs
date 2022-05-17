@@ -80,6 +80,7 @@ namespace WebApplication1
             //{
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiAlertasTempranas", Version = "v1" });
             //});
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo

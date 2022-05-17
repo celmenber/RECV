@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using WebApp_AT.DTOs;
 using WebApp_AT.Models;
@@ -36,6 +37,7 @@ namespace WebApp_AT.Controllers
             var entidades = await context.TblAlertasTempranas.Where(X => X.Fecha >= Hoy)
                                                      .OrderBy(X => X.Id)
                                                      .ToListAsync();
+
             var Dtos = mapper.Map<List<AlertasTempranaDTO>>(entidades);
             return Dtos;
 
@@ -68,7 +70,15 @@ namespace WebApp_AT.Controllers
 
             var at_DTO = mapper.Map<AlertasTempranaDTO>(entidad);
 
-            return new CreatedAtRouteResult("ObtenerAT", new { id = at_DTO.Id }, at_DTO);
+            var alertasT = new CreatedAtRouteResult("ObtenerAT", new { id = at_DTO.Id }, at_DTO);
+
+            var respuesta = new
+            {
+                status = HttpStatusCode.OK,
+                alertasT,
+            };
+
+            return Ok(respuesta);
         }
 
         [HttpPut("{id}")]

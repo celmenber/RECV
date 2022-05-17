@@ -68,6 +68,7 @@ D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.Extensions.Identit
 D:\VBNET\Proyecto_Alertastempranas\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
 D:\VBNET\RECV\bin\Debug\net5.0\appsettings.Development.json
 D:\VBNET\RECV\bin\Debug\net5.0\appsettings.json
+D:\VBNET\RECV\bin\Debug\net5.0\WebApp_AT.StaticWebAssets.xml
 D:\VBNET\RECV\bin\Debug\net5.0\WebApp_AT.exe
 D:\VBNET\RECV\bin\Debug\net5.0\WebApp_AT.deps.json
 D:\VBNET\RECV\bin\Debug\net5.0\WebApp_AT.runtimeconfig.json

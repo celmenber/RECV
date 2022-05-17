@@ -32,10 +32,6 @@ namespace WebApp_AT.Controllers
             var usuarioFromRepo = await _repo.Login(usuarioLoginDTO.Usuario.ToLower(), usuarioLoginDTO.Passwordhash);
 
             if (usuarioFromRepo == null) return Unauthorized();
-            //return BadRequest(new
-            //{
-            //    code = 101
-            //});
 
 
             var usuario = _mapper.Map<UsuarioListDTO>(usuarioFromRepo);
