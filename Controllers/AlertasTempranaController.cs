@@ -60,22 +60,32 @@ namespace WebApp_AT.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] AlertasTCreacionDTO alertasTCreacionDTO)
         {
+            var validaRad = await context.TblAlertasTempranas.AnyAsync(x => x.NumeroRadicado == alertasTCreacionDTO.NumeroRadicado);
+
+            if (validaRad)
+                return Ok(new
+                {
+                    status = 400,
+                    Msg = "Numero Radicado ya existe"
+                });
 
             var entidad = mapper.Map<TblAlertasTemprana>(alertasTCreacionDTO);
           
             entidad.Fecha = DateTime.Now;
+
             context.Add(entidad);
 
             await context.SaveChangesAsync();
 
             var at_DTO = mapper.Map<AlertasTempranaDTO>(entidad);
 
-            var alertasT = new CreatedAtRouteResult("ObtenerAT", new { id = at_DTO.Id }, at_DTO);
+           // var alertasT = new CreatedAtRouteResult("ObtenerAT", new { id = at_DTO.Id }, at_DTO);
 
             var respuesta = new
             {
                 status = HttpStatusCode.OK,
-                alertasT,
+                id = at_DTO.Id,
+                numRadicado = at_DTO.NumeroRadicado
             };
 
             return Ok(respuesta);

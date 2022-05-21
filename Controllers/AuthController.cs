@@ -19,7 +19,7 @@ namespace WebApp_AT.Controllers
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-        public AuthController(RECVContext context,  IMapper mapper, IAuthRepository repo, ITokenService tokenService)
+        public AuthController(IMapper mapper, IAuthRepository repo, ITokenService tokenService)
         {
             this._mapper = mapper;
             this._repo = repo;
@@ -32,7 +32,6 @@ namespace WebApp_AT.Controllers
             var usuarioFromRepo = await _repo.Login(usuarioLoginDTO.Usuario.ToLower(), usuarioLoginDTO.Passwordhash);
 
             if (usuarioFromRepo == null) return Unauthorized();
-
 
             var usuario = _mapper.Map<UsuarioListDTO>(usuarioFromRepo);
 

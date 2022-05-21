@@ -10,6 +10,7 @@ namespace WebApp_AT.DTOs
     {
         [Key]
         public int IdRemitente { get; set; }
+        public DateTime Fecha { get; set; }
         public string NumeroRadicado { get; set; }
         public DateTime FechaDocumento { get; set; }
         public string Asunto { get; set; }

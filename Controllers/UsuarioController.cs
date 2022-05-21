@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace WebApp_AT.Controllers
 
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "ObtenerUser")]
         public async Task<ActionResult<UsuarioListDTO>> UsuarioGet(int id)
         {
 
@@ -67,6 +68,53 @@ namespace WebApp_AT.Controllers
             var UsuarioReturn = _mapper.Map<UsuarioListDTO>(UsuarioCreated);
 
             return Ok(UsuarioReturn);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromBody] UsuarioRegisterDTO usuarioRegisterDTO)
+        {
+            var entidad = _mapper.Map<TblUsuario>(usuarioRegisterDTO);
+
+            entidad.Id = id;
+            _context.Entry(entidad).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            var at_DTO = _mapper.Map<AlertasTempranaDTO>(entidad);
+
+            return new CreatedAtRouteResult("ObtenerUser", new { id = at_DTO.Id }, at_DTO);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<UsuarioEstadoDTO> patchDocument)
+        {
+              if (patchDocument == null)
+              {
+                  return BadRequest();
+              }
+
+              var userDeLaDB = await _context.TblUsuarios.FirstOrDefaultAsync(x => x.Id == id);
+
+              if (userDeLaDB == null)
+              {
+                  return NotFound();
+              }
+
+              var userDTO = _mapper.Map<UsuarioEstadoDTO>(userDeLaDB);
+
+              patchDocument.ApplyTo(userDTO, ModelState);
+
+              _mapper.Map(userDTO, userDeLaDB);
+
+              var isValid = TryValidateModel(userDeLaDB);
+
+              if (!isValid)
+              {
+                  return BadRequest(ModelState);
+              }
+
+              await _context.SaveChangesAsync();
+
+              return NoContent();
         }
     }
 }
