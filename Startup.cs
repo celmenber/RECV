@@ -50,6 +50,7 @@ namespace WebApplication1
 
             // se agrega el repositorio de authenticacion 
             services.AddScoped<IAuthRepository, AuthRepository>();
+
             // se agrega  token service
             services.AddScoped<ITokenService, TokenService>();
 
@@ -76,10 +77,6 @@ namespace WebApplication1
                      ClockSkew = TimeSpan.Zero
                  });
 
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiAlertasTempranas", Version = "v1" });
-            //});
 
             services.AddSwaggerGen(c =>
             {

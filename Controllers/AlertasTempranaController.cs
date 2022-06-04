@@ -57,6 +57,53 @@ namespace WebApp_AT.Controllers
             return AT_Dto;
         }
 
+        [HttpGet("FiltrosAT")]
+        public async Task<ActionResult<List<AlertasTempranaDTO>>> Filtrar([FromQuery] AlertasTFiltrosDTO alertasTFiltrosDTO)
+        {
+
+            var AlertasTFiltros = context.TblAlertasTempranas.AsQueryable();
+
+            if (alertasTFiltrosDTO.Options == "1")
+            {
+                if (alertasTFiltrosDTO.Check == "0")
+                {
+                    AlertasTFiltros = AlertasTFiltros.Where(x => x.Fecha >= alertasTFiltrosDTO.FechaIni && x.Fecha <= alertasTFiltrosDTO.FechaFin);
+                }
+
+                if (alertasTFiltrosDTO.Check == "1")
+                {
+                    AlertasTFiltros = AlertasTFiltros.Where(x => x.FechaDocumento >= alertasTFiltrosDTO.FechaIni && x.FechaDocumento <= alertasTFiltrosDTO.FechaFin);
+                }
+
+            }
+
+            
+
+            if (!string.IsNullOrEmpty(alertasTFiltrosDTO.NumeroRadicado) && alertasTFiltrosDTO.Options == "2")
+            {
+                AlertasTFiltros = AlertasTFiltros.Where(x => x.NumeroRadicado == alertasTFiltrosDTO.NumeroRadicado);
+            }
+
+            if (alertasTFiltrosDTO.Departamento != 0 && alertasTFiltrosDTO.Options == "3")
+            {
+                if (alertasTFiltrosDTO.Departamento != 0 && alertasTFiltrosDTO.Municipio == 0)
+                {
+                  AlertasTFiltros = AlertasTFiltros.Where(x => x.IdDpto == alertasTFiltrosDTO.Departamento);
+                }
+
+                if (alertasTFiltrosDTO.Departamento != 0 && alertasTFiltrosDTO.Municipio != 0)
+                {
+                    AlertasTFiltros = AlertasTFiltros.Where(x => x.IdMunicipio == alertasTFiltrosDTO.Municipio);
+                }
+
+            }
+
+
+            var ATFiltros = await AlertasTFiltros.ToListAsync();
+            return mapper.Map<List<AlertasTempranaDTO>>(ATFiltros);
+
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] AlertasTCreacionDTO alertasTCreacionDTO)
         {
@@ -79,8 +126,6 @@ namespace WebApp_AT.Controllers
 
             var at_DTO = mapper.Map<AlertasTempranaDTO>(entidad);
 
-           // var alertasT = new CreatedAtRouteResult("ObtenerAT", new { id = at_DTO.Id }, at_DTO);
-
             var respuesta = new
             {
                 status = HttpStatusCode.OK,
@@ -94,6 +139,7 @@ namespace WebApp_AT.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] AlertasTCreacionDTO alertasTCreacionDTO)
         {
+
             var entidad = mapper.Map<TblAlertasTemprana>(alertasTCreacionDTO);
 
             entidad.Id = id;
@@ -102,7 +148,15 @@ namespace WebApp_AT.Controllers
 
             var at_DTO = mapper.Map<AlertasTempranaDTO>(entidad);
 
-            return new CreatedAtRouteResult("ObtenerAT", new { id = at_DTO.Id }, at_DTO);
+            var entidad_DTO =  new CreatedAtRouteResult("ObtenerAT", new { id = at_DTO.Id }, at_DTO);
+
+            var respuesta = new
+            {
+                status = HttpStatusCode.OK,
+                entidad = entidad_DTO
+            };
+
+            return Ok(respuesta);
         }
 
         [HttpDelete("{id}")]
@@ -115,10 +169,34 @@ namespace WebApp_AT.Controllers
                 return NotFound();
             }
 
-            context.Remove(new TblAlertasTemprana() { Id = id });
-            await context.SaveChangesAsync();
 
-            return NoContent();
+            var remove = context.Remove(new TblAlertasTemprana() { Id = id });
+
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                //if (ex.InnerException != null &&
+                //ex.InnerException.InnerException != null)
+                //{
+                //    return status = 404;
+                //}
+                
+                return BadRequest(new
+                {
+                    status = 404
+                });
+
+            }
+          
+            var respuesta = new
+            {
+                status = HttpStatusCode.Accepted
+            };
+
+            return Ok(respuesta);
         }
 
     }

@@ -14,6 +14,7 @@ namespace WebApp_AT.Helpers
         {
 
             CreateMap<AlertasTCreacionDTO, TblAlertasTemprana>();
+            CreateMap<AlertasTEdicionDTO, TblAlertasTemprana>();
             CreateMap<ConductasCriterioDTO, TblConductasCriterio>().ReverseMap();
             CreateMap<TblAlertasTemprana, AlertasTempranaDTO>().ReverseMap();
             CreateMap<TblConductasVulneradora, ConductasvulneradoraDTO>().ReverseMap();
