@@ -1,19 +1,16 @@
-﻿using System;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
 namespace WebApp_AT.Models
 {
-    public partial class Unidad_VictimaContext : IdentityDbContext<AplicationUser>
+    public partial class RECVContext : DbContext
     {
-        public Unidad_VictimaContext()
+        public RECVContext()
         {
         }
 
-        public Unidad_VictimaContext(DbContextOptions<Unidad_VictimaContext> options)
+        public RECVContext(DbContextOptions<RECVContext> options)
             : base(options)
         {
         }
@@ -28,14 +25,16 @@ namespace WebApp_AT.Models
         public virtual DbSet<TblMacroregion> TblMacroregions { get; set; }
         public virtual DbSet<TblMunicipio> TblMunicipios { get; set; }
         public virtual DbSet<TblRemitente> TblRemitentes { get; set; }
+        public virtual DbSet<TblRole> TblRoles { get; set; }
         public virtual DbSet<TblUnidadMinimaGeo> TblUnidadMinimaGeos { get; set; }
+        public virtual DbSet<TblUsuario> TblUsuarios { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Data Source=DESARROLLO-WEB;Initial Catalog=Unidad_Victima; User ID=sa;Password=stc*2021;Integrated Security=True");
+  //              optionsBuilder.UseSqlServer("Data Source=PROGRAMADOR;Initial Catalog=RECV; User ID=sa;Password=programador*2022;Integrated Security=True");
             }
         }
 
@@ -303,6 +302,17 @@ namespace WebApp_AT.Models
                     .HasColumnName("NOMBRE_REMITENTE");
             });
 
+            modelBuilder.Entity<TblRole>(entity =>
+            {
+                entity.ToTable("TBL_ROLES");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(256)
+                    .HasColumnName("NOMBRE");
+            });
+
             modelBuilder.Entity<TblUnidadMinimaGeo>(entity =>
             {
                 entity.ToTable("TBL_UNIDAD_MINIMA_GEO");
@@ -328,6 +338,42 @@ namespace WebApp_AT.Models
                     .HasForeignKey(d => d.IdMunicipio)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TBL_UNIDAD_MINIMA_GEO_TBL_MUNICIPIO");
+            });
+
+            modelBuilder.Entity<TblUsuario>(entity =>
+            {
+                entity.ToTable("TBL_USUARIOS");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(256)
+                    .HasColumnName("EMAIL");
+
+                entity.Property(e => e.Estado).HasColumnName("ESTADO");
+
+                entity.Property(e => e.Fecha).HasColumnName("FECHA");
+
+                entity.Property(e => e.IdRol).HasColumnName("ID_ROL");
+
+                entity.Property(e => e.NombreUsuario)
+                    .HasMaxLength(256)
+                    .HasColumnName("NOMBRE_USUARIO");
+
+                entity.Property(e => e.Passwordhash)
+                    .IsRequired()
+                    .HasMaxLength(256)
+                    .HasColumnName("PASSWORDHASH");
+
+                entity.Property(e => e.Passwordsalt)
+                    .IsRequired()
+                    .HasMaxLength(256)
+                    .HasColumnName("PASSWORDSALT");
+
+                entity.Property(e => e.Usuario)
+                    .HasMaxLength(10)
+                    .HasColumnName("USUARIO")
+                    .IsFixedLength(true);
             });
 
             OnModelCreatingPartial(modelBuilder);

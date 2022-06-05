@@ -23,7 +23,19 @@ namespace WebApp_AT.Services
 
         public Task BorrarArchivo(string ruta, string contenedor)
         {
-            throw new NotImplementedException();
+ 
+            if (ruta != null)
+            {
+                var nombreArchivo = Path.GetFileName(ruta);
+                string directorioArchivo = Path.Combine(env.WebRootPath, contenedor, nombreArchivo);
+
+                if (File.Exists(directorioArchivo))
+                {
+                    File.Delete(directorioArchivo);
+                }
+            }
+
+            return Task.FromResult(0);
         }
 
         public Task<string> EditarArchivo(byte[] contenido, string extension, string contenedor, string ruta, string contenType)
@@ -50,5 +62,6 @@ namespace WebApp_AT.Services
             return urlParaBD;
 
         }
+
     }
 }

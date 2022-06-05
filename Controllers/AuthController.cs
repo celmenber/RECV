@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using WebApp_AT.Data.Interfaces;
 using WebApp_AT.DTOs;
-using WebApp_AT.Models;
 using WebApp_AT.Services.Interfaces;
 
 namespace WebApp_AT.Controllers

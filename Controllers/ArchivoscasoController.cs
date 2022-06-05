@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using WebApp_AT.DTOs;
 using WebApp_AT.Models;
@@ -79,8 +80,6 @@ namespace WebApp_AT.Controllers
         {
             var entidad = mapper.Map<TblArchivosCaso>(archivoscreacionDTO);
 
-         //   var CANTARCH = archivoscreacionDTO.RutaArchivo.Length;
-
             if (archivoscreacionDTO.RutaArchivo != null)
             {
                 var memoryStream = new MemoryStream();
@@ -123,17 +122,41 @@ namespace WebApp_AT.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ArchivoscasoDTO>> Delete(int id)
         {
-            var existe = await context.TblCriterios.AnyAsync(X => X.Id == id);
+
+            var existe = await context.TblArchivosCasos.AnyAsync(X => X.Id == id);
+
+            var entidad = await context.TblArchivosCasos.AsNoTracking().FirstOrDefaultAsync(X => X.Id == id);
 
             if (!existe)
             {
                 return NotFound();
             }
 
-            context.Remove(new TblArchivosCaso() { Id = id });
-            await context.SaveChangesAsync();
 
-            return NoContent();
+            context.Remove(new TblArchivosCaso() { Id = id });
+
+            try
+            {
+                await almacenadorArchivo.BorrarArchivo(entidad.RutaArchivo, contenedor);
+                await context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+                return BadRequest(new
+                {
+                    status = 404
+                });
+
+            }
+
+            var respuesta = new
+            {
+                 status = HttpStatusCode.Accepted,
+                 idcasos = entidad.IdCasos
+            };
+
+            return Ok(respuesta);
         }
 
     }

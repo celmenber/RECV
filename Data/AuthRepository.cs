@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApp_AT.Data.Interfaces;
 using WebApp_AT.Models;
+using WebApp_AT.Services;
 
 namespace WebApp_AT.Data
 {
@@ -12,7 +13,8 @@ namespace WebApp_AT.Data
     {
         private readonly RECVContext _context;
 
-        public AuthRepository(RECVContext context)
+
+        public AuthRepository(RECVContext context, IAlmacenadorArchivo almacenadorArchivo)
         {
             this._context = context;
         }
