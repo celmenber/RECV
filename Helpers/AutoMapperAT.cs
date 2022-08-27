@@ -28,6 +28,7 @@ namespace WebApp_AT.Helpers
 
 
             CreateMap<TblUsuario, UsuarioListDTO>().ReverseMap();
+            CreateMap<TblRole, RolesDTO>().ReverseMap();
             CreateMap<UsuarioRegisterDTO, TblUsuario>().ReverseMap();
             CreateMap<UsuarioLoginDTO, TblUsuario>().ReverseMap();
             CreateMap<UsuarioEstadoDTO, TblUsuario>().ReverseMap();
